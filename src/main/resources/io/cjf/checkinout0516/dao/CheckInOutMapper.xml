@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.cjf.checkinout0516.dao.CheckInOutMapper">
+  <resultMap id="BaseResultMap" type="io.cjf.checkinout0516.po.CheckInOut">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="openid" jdbcType="VARCHAR" property="openid" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, openid, type, time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from checkinout
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from checkinout
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="io.cjf.checkinout0516.po.CheckInOut">
+    insert into checkinout (id, openid, type, 
+      time)
+    values (#{id,jdbcType=INTEGER}, #{openid,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+      #{time,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="io.cjf.checkinout0516.po.CheckInOut">
+    insert into checkinout
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="openid != null">
+        openid,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="openid != null">
+        #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="io.cjf.checkinout0516.po.CheckInOut">
+    update checkinout
+    <set>
+      <if test="openid != null">
+        openid = #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="io.cjf.checkinout0516.po.CheckInOut">
+    update checkinout
+    set openid = #{openid,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      time = #{time,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
