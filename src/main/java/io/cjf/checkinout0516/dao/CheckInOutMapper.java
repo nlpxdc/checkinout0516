@@ -11,6 +11,8 @@ public interface CheckInOutMapper {
 
     CheckInOut selectByPrimaryKey(Integer id);
 
+    //todo select by openid and type
+
     int updateByPrimaryKeySelective(CheckInOut record);
 
     int updateByPrimaryKey(CheckInOut record);
