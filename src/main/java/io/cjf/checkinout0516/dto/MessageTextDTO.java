@@ -44,11 +44,7 @@ public class MessageTextDTO {
     @JacksonXmlProperty(localName = "MsgType")
     @JacksonXmlCData
     public String getMsgType() {
-        return MsgType;
-    }
-
-    public void setMsgType(String msgType) {
-        MsgType = msgType;
+        return "text";
     }
 
     @JacksonXmlProperty(localName = "Content")

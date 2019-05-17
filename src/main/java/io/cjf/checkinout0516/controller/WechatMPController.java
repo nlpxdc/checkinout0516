@@ -87,7 +87,6 @@ public class WechatMPController {
                         messageTextDTO.setToUserName(openid);
                         messageTextDTO.setFromUserName(wechatmpId);
                         messageTextDTO.setCreateTime(new Date().getTime());
-                        messageTextDTO.setMsgType("text");
                         messageTextDTO.setContent("谢谢，上班打卡成功");
                         return messageTextDTO;
                     }else {
