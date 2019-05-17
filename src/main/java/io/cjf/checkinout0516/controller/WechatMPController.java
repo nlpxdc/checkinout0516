@@ -6,6 +6,7 @@ import com.grum.geocalc.Coordinate;
 import com.grum.geocalc.EarthCalc;
 import com.grum.geocalc.Point;
 import io.cjf.checkinout0516.dao.CheckInOutMapper;
+import io.cjf.checkinout0516.dto.MessageTextDTO;
 import io.cjf.checkinout0516.enumeration.CheckType;
 import io.cjf.checkinout0516.po.CheckInOut;
 import io.cjf.checkinout0516.vo.Position;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import sun.plugin2.message.Message;
 
 import javax.xml.ws.soap.Addressing;
 import java.util.Date;
@@ -39,11 +41,14 @@ public class WechatMPController {
     @Value("${check.longitude}")
     private Double checkLongitude;
 
+    @Value("${wechat.mp.id}")
+    private String wechatmpId;
+
     @Autowired
     private CheckInOutMapper checkInOutMapper;
 
     @PostMapping(value = "/receive",produces = MediaType.APPLICATION_XML_VALUE)
-    public JSONObject receive(@RequestBody JSONObject message){
+    public Object receive(@RequestBody JSONObject message){
 
         String msgType = message.getString("MsgType");
         if (msgType.equals("event")){
@@ -78,6 +83,13 @@ public class WechatMPController {
                         checkInOut.setTime(new Date());
                         checkInOutMapper.insert(checkInOut);
                         //todo return thx to wechat
+                        MessageTextDTO messageTextDTO = new MessageTextDTO();
+                        messageTextDTO.setToUserName(openid);
+                        messageTextDTO.setFromUserName(wechatmpId);
+                        messageTextDTO.setCreateTime(new Date().getTime());
+                        messageTextDTO.setMsgType("text");
+                        messageTextDTO.setContent("谢谢，上班打卡成功");
+                        return messageTextDTO;
                     }else {
                         Date checkinTime = checkInOut.getTime();
                         long checkinTimestamp = checkinTime.getTime();
