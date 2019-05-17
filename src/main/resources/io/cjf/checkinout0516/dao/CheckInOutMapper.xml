@@ -16,14 +16,20 @@
     from checkinout
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectRecentByOpenidType" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List" /> FROM checkinout
+    where openid = #{openid} and type = #{type}
+    order by time desc
+    limit 1
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from checkinout
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="io.cjf.checkinout0516.po.CheckInOut">
-    insert into checkinout (id, openid, type, 
+    insert into checkinout (openid, type,
       time)
-    values (#{id,jdbcType=INTEGER}, #{openid,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+    values (#{openid,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER},
       #{time,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="io.cjf.checkinout0516.po.CheckInOut">
