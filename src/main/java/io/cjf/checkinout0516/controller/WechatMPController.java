@@ -61,6 +61,10 @@ public class WechatMPController {
                     Position position = openidPosition.get(openid);
 
                     //todo check if position null
+                    if (position == null){
+                        MessageTextDTO messageTextDTO = messageTextDTO(openid, "对不起，获取不到位置，无法打卡");
+                        return messageTextDTO;
+                    }
 
                     Coordinate lat = Coordinate.fromDegrees(checkLatitude);
                     Coordinate lng = Coordinate.fromDegrees(checkLongitude);
@@ -73,6 +77,8 @@ public class WechatMPController {
                     double distance = EarthCalc.harvesineDistance(checkPosition, userPosition); //in meters
                     if (distance > 300){
                         //todo return message to wechat
+                        MessageTextDTO messageTextDTO = messageTextDTO(openid, "对不起，不在打卡范围");
+                        return messageTextDTO;
                     }
 
                     CheckInOut checkInOut = checkInOutMapper.selectRecentByOpenidType(openid, CheckType.CheckIn.ordinal());
@@ -83,12 +89,9 @@ public class WechatMPController {
                         checkInOut.setTime(new Date());
                         checkInOutMapper.insert(checkInOut);
                         //todo return thx to wechat
-                        MessageTextDTO messageTextDTO = new MessageTextDTO();
-                        messageTextDTO.setToUserName(openid);
-                        messageTextDTO.setFromUserName(wechatmpId);
-                        messageTextDTO.setCreateTime(new Date().getTime());
-                        messageTextDTO.setContent("谢谢，上班打卡成功");
+                        MessageTextDTO messageTextDTO = messageTextDTO(openid,"谢谢，打卡成功");
                         return messageTextDTO;
+
                     }else {
                         Date checkinTime = checkInOut.getTime();
                         long checkinTimestamp = checkinTime.getTime();
@@ -117,5 +120,14 @@ public class WechatMPController {
 
         }
         return null;
+    }
+
+    private MessageTextDTO messageTextDTO(String openid, String content){
+        MessageTextDTO messageTextDTO = new MessageTextDTO();
+        messageTextDTO.setToUserName(openid);
+        messageTextDTO.setFromUserName(wechatmpId);
+        messageTextDTO.setCreateTime(new Date().getTime());
+        messageTextDTO.setContent(content);
+        return messageTextDTO;
     }
 }
