@@ -48,7 +48,7 @@ public class WechatMPController {
         return echostr;
     }
 
-//    @PostMapping(value = "/receive",produces = MediaType.APPLICATION_XML_VALUE)
+    @PostMapping(value = "/receive",produces = MediaType.APPLICATION_XML_VALUE)
     public Object receive(@RequestBody JSONObject message){
 
         String msgType = message.getString("MsgType");
