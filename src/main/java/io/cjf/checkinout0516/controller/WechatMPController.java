@@ -16,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -45,7 +42,13 @@ public class WechatMPController {
     @Autowired
     private CheckInOutMapper checkInOutMapper;
 
-    @PostMapping(value = "/receive",produces = MediaType.APPLICATION_XML_VALUE)
+    @GetMapping("/receive")
+    public String receive(@RequestParam String echostr){
+        logger.info("{}", echostr);
+        return echostr;
+    }
+
+//    @PostMapping(value = "/receive",produces = MediaType.APPLICATION_XML_VALUE)
     public Object receive(@RequestBody JSONObject message){
 
         String msgType = message.getString("MsgType");
