@@ -18,7 +18,7 @@ public class WechatMPTestController {
 
     @GetMapping("/receive")
     public String receive(@RequestParam(required = false) String signature,
-                          @RequestParam(required = false) Long timestamp,
+                          @RequestParam(required = false) Integer timestamp,
                           @RequestParam(required = false) String nonce,
                           @RequestParam String echostr){
         logger.info("GET Request!!!");
