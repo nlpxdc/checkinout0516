@@ -8,6 +8,7 @@ import io.cjf.checkinout0516.handler.EventMsgHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,9 @@ public class WechatMPController {
 
     private WechatMPResMsg resMsg;
 
+    @Value("${wechat.signature.verify.enabled}")
+    private boolean signatureVerifyEnabled;
+
     @GetMapping("/receive")
     public String receive(@RequestParam String signature,
                           @RequestParam Integer timestamp,
@@ -39,9 +43,15 @@ public class WechatMPController {
     }
 
     @PostMapping(value = "/receive", produces = MediaType.APPLICATION_XML_VALUE)
-    public WechatMPResMsg receive(@RequestBody WechatMPReqMsg reqMsg) {
+    public WechatMPResMsg receive(@RequestParam(required = false) String signature,
+                                  @RequestParam(required = false) Integer timestamp,
+                                  @RequestParam(required = false) String nonce,
+                                  @RequestBody WechatMPReqMsg reqMsg) {
 
-        //todo verify with token, check from wechat mp
+        if (signatureVerifyEnabled){
+            //todo verify with token, check from wechat mp
+        }
+
         //todo check duplicate request msg, prevent replay
         //common by msgId
         //event by FromUserName + CreateTime
