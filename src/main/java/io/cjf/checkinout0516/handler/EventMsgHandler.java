@@ -5,6 +5,7 @@ import io.cjf.checkinout0516.constant.WechatEventConstant;
 import io.cjf.checkinout0516.dto.TextResMsg;
 import io.cjf.checkinout0516.dto.WechatMPEventReqMsg;
 import io.cjf.checkinout0516.dto.WechatMPResMsg;
+import io.cjf.checkinout0516.exception.ClientException;
 import io.cjf.checkinout0516.po.User;
 import io.cjf.checkinout0516.po.UserDetail;
 import io.cjf.checkinout0516.service.UserService;
@@ -26,7 +27,7 @@ public class EventMsgHandler {
 
     private WechatMPResMsg resMsg;
 
-    public WechatMPResMsg handle(WechatMPEventReqMsg reqMsg) {
+    public WechatMPResMsg handle(WechatMPEventReqMsg reqMsg) throws ClientException {
         String event = reqMsg.getEvent();
 
         switch (event) {
@@ -56,7 +57,7 @@ public class EventMsgHandler {
         return resMsg;
     }
 
-    private WechatMPResMsg handleSubscribe(WechatMPEventReqMsg reqMsg){
+    private WechatMPResMsg handleSubscribe(WechatMPEventReqMsg reqMsg) throws ClientException {
         @NotBlank String openid = reqMsg.getFromUserName();
         User user = userService.getUserFromWechatMP(openid);
         UserDetail userDetail = new UserDetail(openid);

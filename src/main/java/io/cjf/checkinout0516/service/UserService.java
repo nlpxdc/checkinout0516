@@ -15,5 +15,5 @@ public interface UserService {
 
     void checkIn(String openId) throws ClientException;
 
-    User getUserFromWechatMP(String openId);
+    User getUserFromWechatMP(String openId) throws ClientException;
 }

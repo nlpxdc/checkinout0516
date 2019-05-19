@@ -8,7 +8,7 @@ public class WechatMPVariable {
     private String accessToken;
 
     public WechatMPVariable(){
-        accessToken = "21_xZqhyr0-J9Vjx_F8B3D5ah3yvgTLiqmrINR-VNCGfk0uELwtY52GGnlrvHmDD8kn_ArZAeWH4W8F_14mUcgXVxYUScPZ4sVFmoHCyILP3Wr1DmG44KOfwh0uA71Vk05B5tv6Ht__BpQEuBVRBYNiADASPE";
+        accessToken = "21_spHoen4HWcRmYcpWAI00_R1wqKl4JGmT21yrKWA5S_-jwjb-cdITlNjnUTYdG3CXnxbw3vAIRDrbFDKrUw7JxaRhUhVn5Q_VTUBDfGIO3kQPFABEb7Qj6wY4QY_E1aTlVdztvKdmK1xzZE5qTKOdAEAFWA";
     }
 
     public String getAccessToken() {

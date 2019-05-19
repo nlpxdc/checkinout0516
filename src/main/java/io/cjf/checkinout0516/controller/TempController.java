@@ -1,5 +1,6 @@
 package io.cjf.checkinout0516.controller;
 
+import io.cjf.checkinout0516.exception.ClientException;
 import io.cjf.checkinout0516.po.User;
 import io.cjf.checkinout0516.service.UserService;
 import io.cjf.checkinout0516.service.WechatMPService;
@@ -23,7 +24,7 @@ public class TempController {
     private UserService userService;
 
     @GetMapping("/test")
-    public String test(){
+    public String test() throws ClientException {
 //        String accessToken = wechatMPService.getAccessToken();
         User user = userService.getUserFromWechatMP("oUwXe58JsPM6MBFsI3YvnbFIpg-8");
         return "temptest";

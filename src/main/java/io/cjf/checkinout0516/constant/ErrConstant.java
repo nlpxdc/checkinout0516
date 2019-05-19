@@ -5,4 +5,6 @@ public class ErrConstant {
     public static final String CANNOT_GET_POSITION_TEXT = "CANNOT_GET_POSITION";
     public static final String EXCEED_DISTANCE = "0002";
     public static final String EXCEED_DISTANCE_TEXT = "EXCEED_DISTANCE";
+    public static final String CANNOT_GET_USER_FROM_WECHATMP = "0003";
+    public static final String CANNOT_GET_USER_FROM_WECHATMP_TEXT = "CANNOT_GET_USER_FROM_WECHATMP";
 }

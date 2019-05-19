@@ -1,9 +1,12 @@
 package io.cjf.checkinout0516.handler;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import io.cjf.checkinout0516.constant.WechatReqMsgTypeConstant;
 import io.cjf.checkinout0516.dto.WechatMPEventReqMsg;
 import io.cjf.checkinout0516.dto.WechatMPReqMsg;
 import io.cjf.checkinout0516.dto.WechatMPResMsg;
+import io.cjf.checkinout0516.exception.ClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +24,7 @@ public class MsgTypeHandler {
 
     private WechatMPResMsg resMsg;
 
-    public WechatMPResMsg handle(WechatMPReqMsg reqMsg){
+    public WechatMPResMsg handle(WechatMPReqMsg reqMsg) throws ClientException {
         @NotBlank String msgType = reqMsg.getMsgType();
         switch (msgType) {
             case WechatReqMsgTypeConstant.TEXT:
@@ -47,7 +50,8 @@ public class MsgTypeHandler {
                 break;
             case WechatReqMsgTypeConstant.EVENT:
                 logger.info("receive {}", WechatReqMsgTypeConstant.EVENT);
-                WechatMPEventReqMsg eventReqMsg = (WechatMPEventReqMsg) reqMsg;
+                String reqMsgJsonStr = reqMsg.toJSONString();
+                WechatMPEventReqMsg eventReqMsg = JSON.parseObject(reqMsgJsonStr, WechatMPEventReqMsg.class);
                 WechatMPResMsg resMsg = eventMsgHandler.handle(eventReqMsg);
                 this.resMsg = resMsg;
                 break;

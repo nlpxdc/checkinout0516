@@ -91,10 +91,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserFromWechatMP(String openId) {
-        JSONObject userInfo = wechatMPApi.getUserInfo(wechatMPVariable.getAccessToken(), openId, WechatConstant.ZH_CN_LANG);
+    public User getUserFromWechatMP(String openid) throws ClientException {
+        JSONObject userInfo = wechatMPApi.getUserInfo(wechatMPVariable.getAccessToken(), openid, WechatConstant.ZH_CN_LANG);
+        openid = userInfo.getString("openid");
+        if (openid == null){
+            throw new ClientException(ErrConstant.CANNOT_GET_USER_FROM_WECHATMP, ErrConstant.CANNOT_GET_USER_FROM_WECHATMP_TEXT);
+        }
         User user = new User();
-        user.setOpenid(userInfo.getString("openid"));
+        user.setOpenid(openid);
         user.setNickname(userInfo.getString("nickname"));
         user.setGender(userInfo.getByte("sex"));
         user.setAvatarUrl(userInfo.getString("headimgurl"));

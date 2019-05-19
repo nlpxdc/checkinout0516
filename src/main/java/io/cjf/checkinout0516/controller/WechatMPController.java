@@ -2,6 +2,7 @@ package io.cjf.checkinout0516.controller;
 
 import io.cjf.checkinout0516.dto.WechatMPReqMsg;
 import io.cjf.checkinout0516.dto.WechatMPResMsg;
+import io.cjf.checkinout0516.exception.ClientException;
 import io.cjf.checkinout0516.handler.MsgTypeHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,11 +39,12 @@ public class WechatMPController {
         return echostr;
     }
 
+    //todo global exception advisor
     @PostMapping(value = "/receive", produces = MediaType.APPLICATION_XML_VALUE)
     public WechatMPResMsg receive(@RequestParam(required = false) String signature,
                                   @RequestParam(required = false) Integer timestamp,
                                   @RequestParam(required = false) String nonce,
-                                  @RequestBody WechatMPReqMsg reqMsg) {
+                                  @RequestBody WechatMPReqMsg reqMsg) throws ClientException {
 
         if (signatureVerifyEnabled){
             //todo verify with token, check from wechat mp
