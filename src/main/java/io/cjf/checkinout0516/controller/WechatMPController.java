@@ -6,7 +6,9 @@ import com.grum.geocalc.Coordinate;
 import com.grum.geocalc.EarthCalc;
 import com.grum.geocalc.Point;
 import io.cjf.checkinout0516.dao.CheckInOutMapper;
-import io.cjf.checkinout0516.dto.MessageTextDTO;
+import io.cjf.checkinout0516.dto.TextResMsg;
+import io.cjf.checkinout0516.dto.WechatMPReqMsg;
+import io.cjf.checkinout0516.dto.WechatMPResMsg;
 import io.cjf.checkinout0516.enumeration.CheckType;
 import io.cjf.checkinout0516.po.CheckInOut;
 import io.cjf.checkinout0516.vo.Position;
@@ -49,22 +51,26 @@ public class WechatMPController {
     }
 
     @PostMapping(value = "/receive",produces = MediaType.APPLICATION_XML_VALUE)
-    public Object receive(@RequestBody JSONObject message){
+    public WechatMPResMsg receive(@RequestBody WechatMPReqMsg reqMsg){
 
-        String msgType = message.getString("MsgType");
+        String msgType = reqMsg.getMsgType();
+        Long msgId = reqMsg.getMsgId();
+        String fromUserName = reqMsg.getFromUserName();
+        Long createTime = reqMsg.getCreateTime();
+
+
         if (msgType.equals("event")){
-            String event = message.getString("Event");
+            String event = reqMsg.getString("Event");
             if (event.equals("CLICK")){
-                String eventKey = message.getString("EventKey");
+                String eventKey = reqMsg.getString("EventKey");
                 if (eventKey.equals("checkin")){
                     logger.info("check in");
-                    String openid = message.getString("FromUserName");
+                    String openid = fromUserName;
                     Position position = openidPosition.get(openid);
 
-                    //todo check if position null
                     if (position == null){
-                        MessageTextDTO messageTextDTO = messageTextDTO(openid, "对不起，获取不到位置，无法打卡");
-                        return messageTextDTO;
+                        TextResMsg textResMsg = new TextResMsg(openid, "对不起，获取不到位置，无法打卡");
+                        return textResMsg;
                     }
 
                     Coordinate lat = Coordinate.fromDegrees(checkLatitude);
@@ -77,9 +83,8 @@ public class WechatMPController {
 
                     double distance = EarthCalc.harvesineDistance(checkPosition, userPosition); //in meters
                     if (distance > 300){
-                        //todo return message to wechat
-                        MessageTextDTO messageTextDTO = messageTextDTO(openid, "对不起，不在打卡范围");
-                        return messageTextDTO;
+                        TextResMsg textResMsg = new TextResMsg(openid, "对不起，不在打卡范围");
+                        return textResMsg;
                     }
 
                     CheckInOut checkInOut = checkInOutMapper.selectRecentByOpenidType(openid, CheckType.CheckIn.ordinal());
@@ -89,9 +94,9 @@ public class WechatMPController {
                         checkInOut.setType(CheckType.CheckIn.ordinal());
                         checkInOut.setTime(new Date());
                         checkInOutMapper.insert(checkInOut);
-                        //todo return thx to wechat
-                        MessageTextDTO messageTextDTO = messageTextDTO(openid,"谢谢，打卡成功");
-                        return messageTextDTO;
+
+                        TextResMsg textResMsg = new TextResMsg(openid, "谢谢，打卡成功");
+                        return textResMsg;
 
                     }else {
                         Date checkinTime = checkInOut.getTime();
@@ -102,8 +107,8 @@ public class WechatMPController {
                         if (duration < 5 * 60 * 1000){
                             logger.info("{} already checkin", openid);
                             //todo return already checkin notification
-                        }else {
-                            //todo return thx to wechat
+                            TextResMsg textResMsg = new TextResMsg(openid, "已签到");
+                            return textResMsg;
                         }
                     }
 
@@ -111,9 +116,9 @@ public class WechatMPController {
                 }
             }
             if (event.equals("LOCATION")){
-                String openid = message.getString("FromUserName");
-                Double latitude = message.getDouble("Latitude");
-                Double longitude = message.getDouble("Longitude");
+                String openid = fromUserName;
+                Double latitude = reqMsg.getDouble("Latitude");
+                Double longitude = reqMsg.getDouble("Longitude");
                 Position position = new Position(latitude, longitude);
                 openidPosition.put(openid,position);
                 logger.info("set user position: {}, {}",openid, JSON.toJSON(position));
@@ -121,14 +126,5 @@ public class WechatMPController {
 
         }
         return null;
-    }
-
-    private MessageTextDTO messageTextDTO(String openid, String content){
-        MessageTextDTO messageTextDTO = new MessageTextDTO();
-        messageTextDTO.setToUserName(openid);
-        messageTextDTO.setFromUserName(wechatmpId);
-        messageTextDTO.setCreateTime(new Date().getTime());
-        messageTextDTO.setContent(content);
-        return messageTextDTO;
     }
 }
