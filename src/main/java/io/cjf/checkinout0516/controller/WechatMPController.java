@@ -1,6 +1,7 @@
 package io.cjf.checkinout0516.controller;
 
 import io.cjf.checkinout0516.constant.WechatReqMsgTypeConstant;
+import io.cjf.checkinout0516.dto.WechatMPEventReqMsg;
 import io.cjf.checkinout0516.dto.WechatMPReqMsg;
 import io.cjf.checkinout0516.dto.WechatMPResMsg;
 import io.cjf.checkinout0516.handler.EventMsgHandler;
@@ -40,10 +41,17 @@ public class WechatMPController {
     @PostMapping(value = "/receive", produces = MediaType.APPLICATION_XML_VALUE)
     public WechatMPResMsg receive(@RequestBody WechatMPReqMsg reqMsg) {
 
+        //todo verify with token, check from wechat mp
+        //todo check duplicate request msg, prevent replay
+        //common by msgId
+        //event by FromUserName + CreateTime
+
+        //todo check async handle
+
+
         logger.info("{}",reqMsg);
 
         String msgType = reqMsg.getMsgType();
-        Long msgId = reqMsg.getMsgId();
         String fromUserName = reqMsg.getFromUserName();
         Integer createTime = reqMsg.getCreateTime();
 
@@ -71,7 +79,8 @@ public class WechatMPController {
                 break;
             case WechatReqMsgTypeConstant.EVENT:
                 logger.info("receive {}", WechatReqMsgTypeConstant.EVENT);
-                WechatMPResMsg resMsg = eventMsgHandler.handle(reqMsg);
+                WechatMPEventReqMsg eventReqMsg = (WechatMPEventReqMsg) reqMsg;
+                WechatMPResMsg resMsg = eventMsgHandler.handle(eventReqMsg);
                 this.resMsg = resMsg;
                 break;
             default:

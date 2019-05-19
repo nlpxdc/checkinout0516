@@ -9,11 +9,6 @@ public class WechatMPReqMsg extends JSONObject {
 //    protected String FromUserName;
 //    protected Long CreateTime;
 //    protected String MsgType;
-//    protected Long MsgId;
-
-//    public String getToUserName() {
-//        return WechatConstant.MPId;
-//    }
 
     @NotBlank
     public String getFromUserName() {
@@ -30,8 +25,4 @@ public class WechatMPReqMsg extends JSONObject {
         return this.getString("MsgType");
     }
 
-    @NotBlank
-    public Long getMsgId() {
-        return this.getLong("MsgId");
-    }
 }

@@ -2,7 +2,7 @@ package io.cjf.checkinout0516.handler;
 
 import com.alibaba.fastjson.JSON;
 import io.cjf.checkinout0516.constant.WechatEventConstant;
-import io.cjf.checkinout0516.dto.WechatMPReqMsg;
+import io.cjf.checkinout0516.dto.WechatMPEventReqMsg;
 import io.cjf.checkinout0516.dto.WechatMPResMsg;
 import io.cjf.checkinout0516.service.UserService;
 import io.cjf.checkinout0516.vo.Position;
@@ -23,8 +23,8 @@ public class EventMsgHandler {
 
     private WechatMPResMsg resMsg;
 
-    public WechatMPResMsg handle(WechatMPReqMsg reqMsg) {
-        String event = reqMsg.getString("Event");
+    public WechatMPResMsg handle(WechatMPEventReqMsg reqMsg) {
+        String event = reqMsg.getEvent();
 
         switch (event) {
             case WechatEventConstant.SUBSCRIBE:
@@ -52,7 +52,7 @@ public class EventMsgHandler {
         return resMsg;
     }
 
-    private void handleLocation(WechatMPReqMsg reqMsg){
+    private void handleLocation(WechatMPEventReqMsg reqMsg){
         @NotBlank String openId = reqMsg.getFromUserName();
         Double latitude = reqMsg.getDouble("Latitude");
         Double longitude = reqMsg.getDouble("Longitude");
