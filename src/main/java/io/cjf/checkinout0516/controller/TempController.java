@@ -1,5 +1,7 @@
 package io.cjf.checkinout0516.controller;
 
+import io.cjf.checkinout0516.po.User;
+import io.cjf.checkinout0516.service.UserService;
 import io.cjf.checkinout0516.service.WechatMPService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,9 +19,13 @@ public class TempController {
     @Autowired
     private WechatMPService wechatMPService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/test")
     public String test(){
-        String accessToken = wechatMPService.getAccessToken();
+//        String accessToken = wechatMPService.getAccessToken();
+        User user = userService.getFromWechatMP("oUwXe58JsPM6MBFsI3YvnbFIpg-8");
         return "temptest";
     }
 }

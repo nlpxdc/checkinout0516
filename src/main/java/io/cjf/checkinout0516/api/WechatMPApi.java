@@ -12,4 +12,9 @@ public interface WechatMPApi {
     JSONObject getAccessToken(@RequestParam String grant_type,
                               @RequestParam String appid,
                               @RequestParam String secret);
+
+    @GetMapping("/user/info")
+    JSONObject getUserInfo(@RequestParam String access_token,
+                           @RequestParam String openid,
+                           @RequestParam String lang);
 }

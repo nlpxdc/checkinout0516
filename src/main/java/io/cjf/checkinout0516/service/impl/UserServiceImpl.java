@@ -1,11 +1,17 @@
 package io.cjf.checkinout0516.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.grum.geocalc.Coordinate;
 import com.grum.geocalc.EarthCalc;
 import com.grum.geocalc.Point;
+import io.cjf.checkinout0516.api.WechatMPApi;
 import io.cjf.checkinout0516.component.UserPosition;
+import io.cjf.checkinout0516.component.WechatMPVariable;
 import io.cjf.checkinout0516.constant.ErrConstant;
+import io.cjf.checkinout0516.constant.WechatConstant;
+import io.cjf.checkinout0516.enumeration.UserStatus;
 import io.cjf.checkinout0516.exception.ClientException;
+import io.cjf.checkinout0516.po.User;
 import io.cjf.checkinout0516.service.UserService;
 import io.cjf.checkinout0516.vo.Position;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +23,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserPosition userPosition;
+
+    @Autowired
+    private WechatMPApi wechatMPApi;
+
+    @Autowired
+    private WechatMPVariable wechatMPVariable;
 
     @Value("${check.latitude}")
     private Double checkLatitude;
@@ -59,5 +71,17 @@ public class UserServiceImpl implements UserService {
             throw new ClientException(ErrConstant.EXCEED_DISTANCE, ErrConstant.EXCEED_DISTANCE_TEXT);
         }
 
+    }
+
+    @Override
+    public User getFromWechatMP(String openId) {
+        JSONObject userInfo = wechatMPApi.getUserInfo(wechatMPVariable.getAccessToken(), openId, WechatConstant.ZH_CN_LANG);
+        User user = new User();
+        user.setOpenid(userInfo.getString("openid"));
+        user.setNickname(userInfo.getString("nickname"));
+        user.setGender(userInfo.getByte("sex"));
+        user.setAvatarUrl(userInfo.getString("headimgurl"));
+        user.setStatus(((byte) UserStatus.OffWorking.ordinal()));
+        return user;
     }
 }
