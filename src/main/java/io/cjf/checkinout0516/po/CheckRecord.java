@@ -2,12 +2,12 @@ package io.cjf.checkinout0516.po;
 
 import java.util.Date;
 
-public class CheckInOut {
+public class CheckRecord {
     private Integer id;
 
     private String openid;
 
-    private Integer type;
+    private Byte type;
 
     private Date time;
 
@@ -27,11 +27,11 @@ public class CheckInOut {
         this.openid = openid == null ? null : openid.trim();
     }
 
-    public Integer getType() {
+    public Byte getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(Byte type) {
         this.type = type;
     }
 

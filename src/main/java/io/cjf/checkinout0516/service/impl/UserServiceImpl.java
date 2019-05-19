@@ -5,7 +5,6 @@ import com.grum.geocalc.EarthCalc;
 import com.grum.geocalc.Point;
 import io.cjf.checkinout0516.component.UserPosition;
 import io.cjf.checkinout0516.constant.ErrConstant;
-import io.cjf.checkinout0516.dto.TextResMsg;
 import io.cjf.checkinout0516.exception.ClientException;
 import io.cjf.checkinout0516.service.UserService;
 import io.cjf.checkinout0516.vo.Position;

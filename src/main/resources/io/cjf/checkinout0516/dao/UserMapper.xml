@@ -4,11 +4,13 @@
   <resultMap id="BaseResultMap" type="io.cjf.checkinout0516.po.User">
     <id column="openid" jdbcType="VARCHAR" property="openid" />
     <result column="nickname" jdbcType="VARCHAR" property="nickname" />
-    <result column="gender" jdbcType="INTEGER" property="gender" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="gender" jdbcType="TINYINT" property="gender" />
     <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl" />
+    <result column="status" jdbcType="TINYINT" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
-    openid, nickname, gender, avatar_url
+    openid, nickname, real_name, gender, avatar_url, status
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -21,10 +23,12 @@
     where openid = #{openid,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="io.cjf.checkinout0516.po.User">
-    insert into user (openid, nickname, gender, 
-      avatar_url)
-    values (#{openid,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, 
-      #{avatarUrl,jdbcType=VARCHAR})
+    insert into user (openid, nickname, real_name, 
+      gender, avatar_url, status
+      )
+    values (#{openid,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, 
+      #{gender,jdbcType=TINYINT}, #{avatarUrl,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="io.cjf.checkinout0516.po.User">
     insert into user
@@ -35,11 +39,17 @@
       <if test="nickname != null">
         nickname,
       </if>
+      <if test="realName != null">
+        real_name,
+      </if>
       <if test="gender != null">
         gender,
       </if>
       <if test="avatarUrl != null">
         avatar_url,
+      </if>
+      <if test="status != null">
+        status,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -49,11 +59,17 @@
       <if test="nickname != null">
         #{nickname,jdbcType=VARCHAR},
       </if>
+      <if test="realName != null">
+        #{realName,jdbcType=VARCHAR},
+      </if>
       <if test="gender != null">
-        #{gender,jdbcType=INTEGER},
+        #{gender,jdbcType=TINYINT},
       </if>
       <if test="avatarUrl != null">
         #{avatarUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -63,11 +79,17 @@
       <if test="nickname != null">
         nickname = #{nickname,jdbcType=VARCHAR},
       </if>
+      <if test="realName != null">
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
       <if test="gender != null">
-        gender = #{gender,jdbcType=INTEGER},
+        gender = #{gender,jdbcType=TINYINT},
       </if>
       <if test="avatarUrl != null">
         avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
       </if>
     </set>
     where openid = #{openid,jdbcType=VARCHAR}
@@ -75,8 +97,10 @@
   <update id="updateByPrimaryKey" parameterType="io.cjf.checkinout0516.po.User">
     update user
     set nickname = #{nickname,jdbcType=VARCHAR},
-      gender = #{gender,jdbcType=INTEGER},
-      avatar_url = #{avatarUrl,jdbcType=VARCHAR}
+      real_name = #{realName,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=TINYINT},
+      avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT}
     where openid = #{openid,jdbcType=VARCHAR}
   </update>
 </mapper>

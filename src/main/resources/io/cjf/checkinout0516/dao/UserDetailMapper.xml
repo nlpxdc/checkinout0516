@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.cjf.checkinout0516.dao.UserDetailMapper">
+  <resultMap id="BaseResultMap" type="io.cjf.checkinout0516.po.UserDetail">
+    <id column="openid" jdbcType="VARCHAR" property="openid" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="mobile_verified" jdbcType="BIT" property="mobileVerified" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="email_verified" jdbcType="BIT" property="emailVerified" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    openid, mobile, mobile_verified, email, email_verified, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_detail
+    where openid = #{openid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from user_detail
+    where openid = #{openid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="io.cjf.checkinout0516.po.UserDetail">
+    insert into user_detail (openid, mobile, mobile_verified, 
+      email, email_verified, create_time, 
+      update_time)
+    values (#{openid,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{mobileVerified,jdbcType=BIT}, 
+      #{email,jdbcType=VARCHAR}, #{emailVerified,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="io.cjf.checkinout0516.po.UserDetail">
+    insert into user_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="openid != null">
+        openid,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="mobileVerified != null">
+        mobile_verified,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="emailVerified != null">
+        email_verified,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="openid != null">
+        #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileVerified != null">
+        #{mobileVerified,jdbcType=BIT},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="emailVerified != null">
+        #{emailVerified,jdbcType=BIT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="io.cjf.checkinout0516.po.UserDetail">
+    update user_detail
+    <set>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileVerified != null">
+        mobile_verified = #{mobileVerified,jdbcType=BIT},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="emailVerified != null">
+        email_verified = #{emailVerified,jdbcType=BIT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where openid = #{openid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="io.cjf.checkinout0516.po.UserDetail">
+    update user_detail
+    set mobile = #{mobile,jdbcType=VARCHAR},
+      mobile_verified = #{mobileVerified,jdbcType=BIT},
+      email = #{email,jdbcType=VARCHAR},
+      email_verified = #{emailVerified,jdbcType=BIT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where openid = #{openid,jdbcType=VARCHAR}
+  </update>
+</mapper>
