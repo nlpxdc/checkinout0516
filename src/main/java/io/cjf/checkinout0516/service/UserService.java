@@ -9,6 +9,8 @@ public interface UserService {
 
     void create(User user, UserDetail userDetail);
 
+    void delete(String openid);
+
     void savePosition(String openId, Position position);
 
     Position loadPosition(String openId);

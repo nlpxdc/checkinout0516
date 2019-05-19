@@ -57,6 +57,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
+    public void delete(String openid) {
+        //todo delete check records belong to openid
+        userDetailMapper.deleteByPrimaryKey(openid);
+        userMapper.deleteByPrimaryKey(openid);
+    }
+
+    @Override
     public void savePosition(String openId, Position position) {
         userPosition.put(openId, position);
     }

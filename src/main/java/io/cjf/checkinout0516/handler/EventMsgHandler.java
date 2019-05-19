@@ -68,6 +68,11 @@ public class EventMsgHandler {
         return textResMsg;
     }
 
+    public void handleUnsubscribe(WechatMPEventReqMsg reqMsg){
+        @NotBlank String openid = reqMsg.getFromUserName();
+        userService.delete(openid);
+    }
+
     private void handleLocation(WechatMPEventReqMsg reqMsg){
         @NotBlank String openId = reqMsg.getFromUserName();
         Double latitude = reqMsg.getDouble("Latitude");
