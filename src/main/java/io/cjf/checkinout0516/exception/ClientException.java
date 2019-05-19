@@ -11,4 +11,8 @@ public class ClientException extends Exception{
         super(errMsg);
         this.errCode = errCode;
     }
+
+    public String getErrCode() {
+        return errCode;
+    }
 }
