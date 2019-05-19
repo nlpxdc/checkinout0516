@@ -15,6 +15,7 @@ public class WechatMPVariable {
         return accessToken;
     }
 
+    //todo schedule get wechatmp access token in 1.5 hours
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
     }
