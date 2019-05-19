@@ -2,6 +2,8 @@ package io.cjf.checkinout0516.dto;
 
 import com.alibaba.fastjson.JSONObject;
 
+import javax.validation.constraints.NotBlank;
+
 public class WechatMPReqMsg extends JSONObject {
 //    protected String ToUserName;
 //    protected String FromUserName;
@@ -13,18 +15,22 @@ public class WechatMPReqMsg extends JSONObject {
 //        return WechatConstant.MPId;
 //    }
 
+    @NotBlank
     public String getFromUserName() {
         return this.getString("FromUserName");
     }
 
-    public Long getCreateTime() {
-        return this.getLong("CreateTime");
+    @NotBlank
+    public Integer getCreateTime() {
+        return this.getInteger("CreateTime");
     }
 
+    @NotBlank
     public String getMsgType() {
         return this.getString("MsgType");
     }
 
+    @NotBlank
     public Long getMsgId() {
         return this.getLong("MsgId");
     }
