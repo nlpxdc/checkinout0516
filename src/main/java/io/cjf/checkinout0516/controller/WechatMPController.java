@@ -37,15 +37,20 @@ public class WechatMPController {
     @Value("${check.longitude}")
     private Double checkLongitude;
 
-    @Value("${wechat.mp.id}")
-    private String wechatmpId;
-
     @Autowired
     private CheckInOutMapper checkInOutMapper;
 
     @GetMapping("/receive")
-    public String receive(@RequestParam String echostr){
-        logger.info("{}", echostr);
+    public String receive(@RequestParam String signature,
+                          @RequestParam Integer timestamp,
+                          @RequestParam String nonce,
+                          @RequestParam String echostr){
+        logger.info("GET Request!!!");
+        logger.info("signature: {}", signature);
+        logger.info("timestamp: {}", timestamp);
+        logger.info("nonce: {}", nonce);
+        logger.info("echostr: {}", echostr);
+        //todo verify with token
         return echostr;
     }
 
@@ -93,6 +98,7 @@ public class WechatMPController {
                         checkInOut.setType(CheckType.CheckIn.ordinal());
                         checkInOut.setTime(new Date());
                         checkInOutMapper.insert(checkInOut);
+                        openidPosition.remove(openid);
 
                         TextResMsg textResMsg = new TextResMsg(openid, "谢谢，打卡成功");
                         return textResMsg;
@@ -105,13 +111,10 @@ public class WechatMPController {
                         long duration = currentTimestamp - checkinTimestamp;
                         if (duration < 5 * 60 * 1000){
                             logger.info("{} already checkin", openid);
-                            //todo return already checkin notification
                             TextResMsg textResMsg = new TextResMsg(openid, "已签到");
                             return textResMsg;
                         }
                     }
-
-
                 }
             }
             if (event.equals("LOCATION")){
