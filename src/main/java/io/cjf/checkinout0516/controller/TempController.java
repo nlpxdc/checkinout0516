@@ -25,7 +25,7 @@ public class TempController {
     @GetMapping("/test")
     public String test(){
 //        String accessToken = wechatMPService.getAccessToken();
-        User user = userService.getFromWechatMP("oUwXe58JsPM6MBFsI3YvnbFIpg-8");
+        User user = userService.getUserFromWechatMP("oUwXe58JsPM6MBFsI3YvnbFIpg-8");
         return "temptest";
     }
 }

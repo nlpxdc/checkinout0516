@@ -9,14 +9,18 @@ import io.cjf.checkinout0516.component.UserPosition;
 import io.cjf.checkinout0516.component.WechatMPVariable;
 import io.cjf.checkinout0516.constant.ErrConstant;
 import io.cjf.checkinout0516.constant.WechatConstant;
+import io.cjf.checkinout0516.dao.UserDetailMapper;
+import io.cjf.checkinout0516.dao.UserMapper;
 import io.cjf.checkinout0516.enumeration.UserStatus;
 import io.cjf.checkinout0516.exception.ClientException;
 import io.cjf.checkinout0516.po.User;
+import io.cjf.checkinout0516.po.UserDetail;
 import io.cjf.checkinout0516.service.UserService;
 import io.cjf.checkinout0516.vo.Position;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -30,6 +34,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private WechatMPVariable wechatMPVariable;
 
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private UserDetailMapper userDetailMapper;
+
     @Value("${check.latitude}")
     private Double checkLatitude;
 
@@ -38,6 +48,13 @@ public class UserServiceImpl implements UserService {
 
     @Value("${check.distance}")
     private Double checkDistance;
+
+    @Override
+    @Transactional
+    public void create(User user, UserDetail userDetail) {
+        userMapper.insert(user);
+        userDetailMapper.insert(userDetail);
+    }
 
     @Override
     public void savePosition(String openId, Position position) {
@@ -74,7 +91,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getFromWechatMP(String openId) {
+    public User getUserFromWechatMP(String openId) {
         JSONObject userInfo = wechatMPApi.getUserInfo(wechatMPVariable.getAccessToken(), openId, WechatConstant.ZH_CN_LANG);
         User user = new User();
         user.setOpenid(userInfo.getString("openid"));

@@ -7,7 +7,7 @@ import io.cjf.checkinout0516.vo.Position;
 
 public interface UserService {
 
-//    void create(User user, UserDetail userDetail);
+    void create(User user, UserDetail userDetail);
 
     void savePosition(String openId, Position position);
 
@@ -15,5 +15,5 @@ public interface UserService {
 
     void checkIn(String openId) throws ClientException;
 
-    User getFromWechatMP(String openId);
+    User getUserFromWechatMP(String openId);
 }

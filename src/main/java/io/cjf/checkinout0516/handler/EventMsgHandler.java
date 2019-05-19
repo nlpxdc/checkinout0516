@@ -2,8 +2,11 @@ package io.cjf.checkinout0516.handler;
 
 import com.alibaba.fastjson.JSON;
 import io.cjf.checkinout0516.constant.WechatEventConstant;
+import io.cjf.checkinout0516.dto.TextResMsg;
 import io.cjf.checkinout0516.dto.WechatMPEventReqMsg;
 import io.cjf.checkinout0516.dto.WechatMPResMsg;
+import io.cjf.checkinout0516.po.User;
+import io.cjf.checkinout0516.po.UserDetail;
 import io.cjf.checkinout0516.service.UserService;
 import io.cjf.checkinout0516.vo.Position;
 import org.slf4j.Logger;
@@ -29,6 +32,7 @@ public class EventMsgHandler {
         switch (event) {
             case WechatEventConstant.SUBSCRIBE:
                 logger.info("receive {}", WechatEventConstant.SUBSCRIBE);
+                resMsg = handleSubscribe(reqMsg);
                 break;
             case WechatEventConstant.UNSUBSCRIBE:
                 logger.info("receive {}", WechatEventConstant.UNSUBSCRIBE);
@@ -50,6 +54,17 @@ public class EventMsgHandler {
                 logger.info("it doesn't match any event");
         }
         return resMsg;
+    }
+
+    private WechatMPResMsg handleSubscribe(WechatMPEventReqMsg reqMsg){
+        @NotBlank String openid = reqMsg.getFromUserName();
+        User user = userService.getUserFromWechatMP(openid);
+        UserDetail userDetail = new UserDetail(openid);
+        userService.create(user, userDetail);
+
+        String text = String.format("你好，%s，欢迎订阅", user.getNickname());
+        TextResMsg textResMsg = new TextResMsg(openid, text);
+        return textResMsg;
     }
 
     private void handleLocation(WechatMPEventReqMsg reqMsg){
