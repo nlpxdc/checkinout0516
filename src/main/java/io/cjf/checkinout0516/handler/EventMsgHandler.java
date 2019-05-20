@@ -26,7 +26,7 @@ public class EventMsgHandler {
     private UserService userService;
 
     @Autowired
-    private EventKeyHandler eventKeyHandler;
+    private ClickEventHandler clickEventHandler;
 
     private WechatMPResMsg resMsg;
 
@@ -51,7 +51,7 @@ public class EventMsgHandler {
                 break;
             case WechatEventConstant.CLICK:
                 logger.info("receive {}", WechatEventConstant.CLICK);
-                resMsg = eventKeyHandler.handle(reqMsg);
+                resMsg = clickEventHandler.handle(reqMsg);
                 break;
             case WechatEventConstant.VIEW:
                 logger.info("receive {}", WechatEventConstant.VIEW);

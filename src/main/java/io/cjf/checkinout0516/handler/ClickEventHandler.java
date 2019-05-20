@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.validation.constraints.NotBlank;
 
 @Service
-public class EventKeyHandler {
+public class ClickEventHandler {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
