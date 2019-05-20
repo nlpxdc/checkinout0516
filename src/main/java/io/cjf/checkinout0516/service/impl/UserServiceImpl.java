@@ -12,8 +12,10 @@ import io.cjf.checkinout0516.constant.WechatConstant;
 import io.cjf.checkinout0516.dao.CheckRecordMapper;
 import io.cjf.checkinout0516.dao.UserDetailMapper;
 import io.cjf.checkinout0516.dao.UserMapper;
+import io.cjf.checkinout0516.enumeration.CheckType;
 import io.cjf.checkinout0516.enumeration.UserStatus;
 import io.cjf.checkinout0516.exception.ClientException;
+import io.cjf.checkinout0516.po.CheckRecord;
 import io.cjf.checkinout0516.po.User;
 import io.cjf.checkinout0516.po.UserDetail;
 import io.cjf.checkinout0516.service.UserService;
@@ -22,6 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -80,8 +84,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void checkIn(String openId) throws ClientException {
-        Position position = loadPosition(openId);
+    @Transactional
+    public void checkIn(String openid) throws ClientException {
+        Position position = loadPosition(openid);
 
         if (position == null){
             throw new ClientException(ErrConstant.CANNOT_GET_POSITION, ErrConstant.CANNOT_GET_POSITION_TEXT);
@@ -100,6 +105,20 @@ public class UserServiceImpl implements UserService {
             throw new ClientException(ErrConstant.EXCEED_DISTANCE, ErrConstant.EXCEED_DISTANCE_TEXT);
         }
 
+        //todo use redis? or mybatis cache second level
+        User user = userMapper.selectByPrimaryKey(openid);
+        Byte status = user.getStatus();
+        if (status == UserStatus.OnWorking.ordinal()){
+            throw new ClientException(ErrConstant.ALREADY_CHECK_IN, ErrConstant.ALREADY_CHECK_IN_TEXT);
+        }
+        CheckRecord checkRecord = new CheckRecord();
+        checkRecord.setOpenid(openid);
+        checkRecord.setType((byte) CheckType.CheckIn.ordinal());
+        checkRecord.setTime(new Date());
+        checkRecordMapper.insert(checkRecord);
+
+        user.setStatus((byte) UserStatus.OnWorking.ordinal());
+        userMapper.updateByPrimaryKey(user);
     }
 
     @Override

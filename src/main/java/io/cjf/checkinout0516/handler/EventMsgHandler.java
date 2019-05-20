@@ -25,6 +25,9 @@ public class EventMsgHandler {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private EventKeyHandler eventKeyHandler;
+
     private WechatMPResMsg resMsg;
 
     public WechatMPResMsg handle(WechatMPEventReqMsg reqMsg) throws ClientException {
@@ -48,6 +51,7 @@ public class EventMsgHandler {
                 break;
             case WechatEventConstant.CLICK:
                 logger.info("receive {}", WechatEventConstant.CLICK);
+                resMsg = eventKeyHandler.handle(reqMsg);
                 break;
             case WechatEventConstant.VIEW:
                 logger.info("receive {}", WechatEventConstant.VIEW);

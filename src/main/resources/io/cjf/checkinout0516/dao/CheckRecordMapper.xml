@@ -20,12 +20,6 @@
     delete from check_record
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="io.cjf.checkinout0516.po.CheckRecord">
-    insert into check_record (id, openid, type, 
-      time)
-    values (#{id,jdbcType=INTEGER}, #{openid,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, 
-      #{time,jdbcType=TIMESTAMP})
-  </insert>
   <insert id="insertSelective" parameterType="io.cjf.checkinout0516.po.CheckRecord">
     insert into check_record
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -85,5 +79,11 @@
     delete from check_record
     where openid = #{openid,jdbcType=VARCHAR}
   </delete>
+  <insert id="insert" parameterType="io.cjf.checkinout0516.po.CheckRecord" useGeneratedKeys="true" keyProperty="id">
+    insert into check_record (openid, type,
+                              time)
+    values (#{openid,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT},
+            #{time,jdbcType=TIMESTAMP})
+  </insert>
 
 </mapper>
