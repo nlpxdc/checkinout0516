@@ -107,6 +107,9 @@ public class UserServiceImpl implements UserService {
 
         //todo use redis? or mybatis cache second level
         User user = userMapper.selectByPrimaryKey(openid);
+        if (user == null){
+            throw new  ClientException(ErrConstant.USER_NOT_EXIST, ErrConstant.USER_NOT_EXIST_TEXT);
+        }
         Byte status = user.getStatus();
         if (status == UserStatus.OnWorking.ordinal()){
             throw new ClientException(ErrConstant.ALREADY_CHECK_IN, ErrConstant.ALREADY_CHECK_IN_TEXT);

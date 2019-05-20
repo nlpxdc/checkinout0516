@@ -24,7 +24,7 @@
   </delete>
   <insert id="insert" parameterType="io.cjf.checkinout0516.po.User">
     insert into user (openid, nickname, real_name, 
-      gender, avatar_url, status
+      gender, avatar_url, `status`
       )
     values (#{openid,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, 
       #{gender,jdbcType=TINYINT}, #{avatarUrl,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}
