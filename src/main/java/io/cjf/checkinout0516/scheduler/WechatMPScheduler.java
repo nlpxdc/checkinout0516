@@ -5,6 +5,7 @@ import io.cjf.checkinout0516.service.WechatMPService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -19,11 +20,16 @@ public class WechatMPScheduler {
     @Autowired
     private WechatMPVariable wechatMPVariable;
 
+    @Value("${wechatmp.refresh.accesstoken.enabled}")
+    private boolean refreshAccessTokenEnabled;
+
     @Scheduled(cron = "${wechatmp.accesstoken.refreshcron}")
     public void refreshAccessToken(){
-        logger.info("begin to refresh wechatmp access token");
-        String accessToken = wechatMPService.getAccessToken();
-        wechatMPVariable.setAccessToken(accessToken);
-        logger.info("wechatmp access token has been refreshed: {}", accessToken);
+        if (refreshAccessTokenEnabled){
+            logger.info("begin to refresh wechatmp access token");
+            String accessToken = wechatMPService.getAccessToken();
+            wechatMPVariable.setAccessToken(accessToken);
+            logger.info("wechatmp access token has been refreshed: {}", accessToken);
+        }
     }
 }
