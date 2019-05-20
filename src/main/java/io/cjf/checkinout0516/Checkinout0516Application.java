@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @MapperScan("io.cjf.checkinout0516.dao")
 @EnableFeignClients
-//@EnableScheduling
+@EnableScheduling
 public class Checkinout0516Application {
 
     public static void main(String[] args) {

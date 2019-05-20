@@ -19,8 +19,7 @@ public class WechatMPScheduler {
     @Autowired
     private WechatMPVariable wechatMPVariable;
 
-    //todo config with properties
-    @Scheduled(fixedRate = 5400*1000)
+    @Scheduled(cron = "${wechatmp.accesstoken.refreshcron}")
     public void refreshAccessToken(){
         logger.info("begin to refresh wechatmp access token");
         String accessToken = wechatMPService.getAccessToken();
