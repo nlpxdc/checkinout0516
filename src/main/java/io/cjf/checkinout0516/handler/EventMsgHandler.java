@@ -37,6 +37,7 @@ public class EventMsgHandler {
                 break;
             case WechatEventConstant.UNSUBSCRIBE:
                 logger.info("receive {}", WechatEventConstant.UNSUBSCRIBE);
+                handleUnsubscribe(reqMsg);
                 break;
             case WechatEventConstant.SCAN:
                 logger.info("receive {}", WechatEventConstant.SCAN);

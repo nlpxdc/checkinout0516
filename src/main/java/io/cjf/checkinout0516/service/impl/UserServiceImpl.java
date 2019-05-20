@@ -9,6 +9,7 @@ import io.cjf.checkinout0516.component.UserPosition;
 import io.cjf.checkinout0516.component.WechatMPVariable;
 import io.cjf.checkinout0516.constant.ErrConstant;
 import io.cjf.checkinout0516.constant.WechatConstant;
+import io.cjf.checkinout0516.dao.CheckRecordMapper;
 import io.cjf.checkinout0516.dao.UserDetailMapper;
 import io.cjf.checkinout0516.dao.UserMapper;
 import io.cjf.checkinout0516.enumeration.UserStatus;
@@ -40,6 +41,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDetailMapper userDetailMapper;
 
+    @Autowired
+    private CheckRecordMapper checkRecordMapper;
+
     @Value("${check.latitude}")
     private Double checkLatitude;
 
@@ -59,7 +63,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void delete(String openid) {
-        //todo delete check records belong to openid
+        checkRecordMapper.deleteByOpenid(openid);
         userDetailMapper.deleteByPrimaryKey(openid);
         userMapper.deleteByPrimaryKey(openid);
     }
