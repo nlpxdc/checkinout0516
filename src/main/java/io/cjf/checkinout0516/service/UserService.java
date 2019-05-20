@@ -13,9 +13,11 @@ public interface UserService {
 
     void savePosition(String openId, Position position);
 
-    Position loadPosition(String openId);
+    Position loadPosition(String openid);
 
-    void checkIn(String openId) throws ClientException;
+    void checkIn(String openid) throws ClientException;
+
+    void checkOut(String openid) throws ClientException;
 
     User getUserFromWechatMP(String openId) throws ClientException;
 }

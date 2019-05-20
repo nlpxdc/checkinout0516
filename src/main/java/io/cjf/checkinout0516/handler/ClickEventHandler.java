@@ -31,6 +31,10 @@ public class ClickEventHandler {
                 logger.info("receive {}", WechatEventKeyConstant.CHECK_IN);
                 resMsg = handleCheckIn(reqMsg);
                 break;
+            case WechatEventKeyConstant.CHECK_OUT:
+                logger.info("receive {}", WechatEventKeyConstant.CHECK_OUT);
+                resMsg = handleCheckOut(reqMsg);
+                break;
             default:
                 logger.info("it doesn't match any event key");
         }
@@ -42,6 +46,13 @@ public class ClickEventHandler {
         @NotBlank String openid = reqMsg.getFromUserName();
         userService.checkIn(openid);
         TextResMsg textResMsg = new TextResMsg(openid, "thx, check in succeed");
+        return textResMsg;
+    }
+
+    private TextResMsg handleCheckOut(WechatMPEventReqMsg reqMsg) throws ClientException {
+        @NotBlank String openid = reqMsg.getFromUserName();
+        userService.checkOut(openid);
+        TextResMsg textResMsg = new TextResMsg(openid, "thx, check out succeed");
         return textResMsg;
     }
 }
