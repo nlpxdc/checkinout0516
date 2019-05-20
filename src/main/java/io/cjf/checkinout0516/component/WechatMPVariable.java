@@ -7,15 +7,10 @@ public class WechatMPVariable {
 
     private String accessToken;
 
-    public WechatMPVariable(){
-        accessToken = "21_spHoen4HWcRmYcpWAI00_R1wqKl4JGmT21yrKWA5S_-jwjb-cdITlNjnUTYdG3CXnxbw3vAIRDrbFDKrUw7JxaRhUhVn5Q_VTUBDfGIO3kQPFABEb7Qj6wY4QY_E1aTlVdztvKdmK1xzZE5qTKOdAEAFWA";
-    }
-
     public String getAccessToken() {
         return accessToken;
     }
 
-    //todo schedule get wechatmp access token in 1.5 hours
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
     }
