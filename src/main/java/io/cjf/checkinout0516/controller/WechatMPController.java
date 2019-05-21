@@ -1,7 +1,6 @@
 package io.cjf.checkinout0516.controller;
 
 import io.cjf.checkinout0516.dto.WechatMPReqMsg;
-import io.cjf.checkinout0516.dto.WechatMPResMsg;
 import io.cjf.checkinout0516.exception.ClientException;
 import io.cjf.checkinout0516.handler.MsgTypeHandler;
 import org.slf4j.Logger;
@@ -39,7 +38,6 @@ public class WechatMPController {
         return echostr;
     }
 
-    //todo global exception advisor
     @PostMapping(value = "/receive", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.TEXT_PLAIN_VALUE })
     public Object receive(@RequestParam(required = false) String signature,
                                   @RequestParam(required = false) Integer timestamp,

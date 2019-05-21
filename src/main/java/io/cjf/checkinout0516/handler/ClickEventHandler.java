@@ -2,6 +2,7 @@ package io.cjf.checkinout0516.handler;
 
 import io.cjf.checkinout0516.constant.WechatEventKeyConstant;
 import io.cjf.checkinout0516.dto.TextResMsg;
+import io.cjf.checkinout0516.dto.WechatMPClickEventReqMsg;
 import io.cjf.checkinout0516.dto.WechatMPEventReqMsg;
 import io.cjf.checkinout0516.dto.WechatMPResMsg;
 import io.cjf.checkinout0516.exception.ClientException;
@@ -21,11 +22,11 @@ public class ClickEventHandler {
     @Autowired
     private UserService userService;
 
-    public WechatMPResMsg handle(WechatMPEventReqMsg reqMsg) throws ClientException {
+    public WechatMPResMsg handle(WechatMPClickEventReqMsg reqMsg) throws ClientException {
 
         WechatMPResMsg resMsg = null;
 
-        String eventKey = reqMsg.getString("EventKey");
+        String eventKey = reqMsg.getEventKey();
 
         switch (eventKey) {
             case WechatEventKeyConstant.CHECK_IN:

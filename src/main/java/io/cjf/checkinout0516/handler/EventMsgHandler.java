@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import io.cjf.checkinout0516.constant.WechatConstant;
 import io.cjf.checkinout0516.constant.WechatEventConstant;
 import io.cjf.checkinout0516.dto.TextResMsg;
+import io.cjf.checkinout0516.dto.WechatMPClickEventReqMsg;
 import io.cjf.checkinout0516.dto.WechatMPEventReqMsg;
 import io.cjf.checkinout0516.exception.ClientException;
 import io.cjf.checkinout0516.po.User;
@@ -51,7 +52,9 @@ public class EventMsgHandler {
                 break;
             case WechatEventConstant.CLICK:
                 logger.info("receive {}", WechatEventConstant.CLICK);
-                resMsg = clickEventHandler.handle(reqMsg);
+                String reqMsgJsonStr = reqMsg.toJSONString();
+                WechatMPClickEventReqMsg clickEventReqMsg = JSON.parseObject(reqMsgJsonStr, WechatMPClickEventReqMsg.class);
+                resMsg = clickEventHandler.handle(clickEventReqMsg);
                 break;
             case WechatEventConstant.VIEW:
                 logger.info("receive {}", WechatEventConstant.VIEW);
