@@ -1,10 +1,10 @@
 package io.cjf.checkinout0516.handler;
 
 import com.alibaba.fastjson.JSON;
+import io.cjf.checkinout0516.constant.WechatConstant;
 import io.cjf.checkinout0516.constant.WechatEventConstant;
 import io.cjf.checkinout0516.dto.TextResMsg;
 import io.cjf.checkinout0516.dto.WechatMPEventReqMsg;
-import io.cjf.checkinout0516.dto.WechatMPResMsg;
 import io.cjf.checkinout0516.exception.ClientException;
 import io.cjf.checkinout0516.po.User;
 import io.cjf.checkinout0516.po.UserDetail;
@@ -28,9 +28,9 @@ public class EventMsgHandler {
     @Autowired
     private ClickEventHandler clickEventHandler;
 
-    private WechatMPResMsg resMsg;
+    public Object handle(WechatMPEventReqMsg reqMsg) throws ClientException {
+        Object resMsg = WechatConstant.SUCCESS_RESPONSE;
 
-    public WechatMPResMsg handle(WechatMPEventReqMsg reqMsg) throws ClientException {
         String event = reqMsg.getEvent();
 
         switch (event) {
@@ -62,7 +62,7 @@ public class EventMsgHandler {
         return resMsg;
     }
 
-    private WechatMPResMsg handleSubscribe(WechatMPEventReqMsg reqMsg) throws ClientException {
+    private TextResMsg handleSubscribe(WechatMPEventReqMsg reqMsg) throws ClientException {
         @NotBlank String openid = reqMsg.getFromUserName();
         User user = userService.getUserFromWechatMP(openid);
         UserDetail userDetail = new UserDetail(openid);

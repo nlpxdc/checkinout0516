@@ -40,8 +40,8 @@ public class WechatMPController {
     }
 
     //todo global exception advisor
-    @PostMapping(value = "/receive", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.TEXT_PLAIN_VALUE})
-    public WechatMPResMsg receive(@RequestParam(required = false) String signature,
+    @PostMapping(value = "/receive", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.TEXT_PLAIN_VALUE })
+    public Object receive(@RequestParam(required = false) String signature,
                                   @RequestParam(required = false) Integer timestamp,
                                   @RequestParam(required = false) String nonce,
                                   @RequestBody WechatMPReqMsg reqMsg) throws ClientException {
@@ -58,7 +58,7 @@ public class WechatMPController {
 
         logger.info("{}",reqMsg);
 
-        WechatMPResMsg resMsg = msgTypeHandler.handle(reqMsg);
+        Object resMsg = msgTypeHandler.handle(reqMsg);
 
         return resMsg;
     }

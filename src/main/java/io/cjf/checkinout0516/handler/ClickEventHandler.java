@@ -21,9 +21,10 @@ public class ClickEventHandler {
     @Autowired
     private UserService userService;
 
-    private WechatMPResMsg resMsg;
-
     public WechatMPResMsg handle(WechatMPEventReqMsg reqMsg) throws ClientException {
+
+        WechatMPResMsg resMsg = null;
+
         String eventKey = reqMsg.getString("EventKey");
 
         switch (eventKey) {
