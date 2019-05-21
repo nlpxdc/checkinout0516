@@ -92,11 +92,11 @@ public class UserServiceImpl implements UserService {
         //todo use redis? or mybatis cache second level
         User user = userMapper.selectByPrimaryKey(openid);
         if (user == null){
-            throw new  ClientException(ErrConstant.USER_NOT_EXIST, ErrConstant.USER_NOT_EXIST_TEXT);
+            throw new  ClientException(openid, ErrConstant.USER_NOT_EXIST, ErrConstant.USER_NOT_EXIST_TEXT);
         }
         Byte status = user.getStatus();
         if (status == UserStatus.OnWorking.ordinal()){
-            throw new ClientException(ErrConstant.ALREADY_CHECK_IN, ErrConstant.ALREADY_CHECK_IN_TEXT);
+            throw new ClientException(openid, ErrConstant.ALREADY_CHECK_IN, ErrConstant.ALREADY_CHECK_IN_TEXT);
         }
         CheckRecord checkRecord = new CheckRecord();
         checkRecord.setOpenid(openid);
@@ -116,12 +116,12 @@ public class UserServiceImpl implements UserService {
 
         User user = userMapper.selectByPrimaryKey(openid);
         if (user == null){
-            throw new  ClientException(ErrConstant.USER_NOT_EXIST, ErrConstant.USER_NOT_EXIST_TEXT);
+            throw new  ClientException(openid, ErrConstant.USER_NOT_EXIST, ErrConstant.USER_NOT_EXIST_TEXT);
         }
         Byte status = user.getStatus();
 
         if (status == UserStatus.OffWorking.ordinal()){
-            throw new ClientException(ErrConstant.ALREADY_CHECK_OUT, ErrConstant.ALREADY_CHECK_OUT_TEXT);
+            throw new ClientException(openid, ErrConstant.ALREADY_CHECK_OUT, ErrConstant.ALREADY_CHECK_OUT_TEXT);
         }
         CheckRecord checkRecord = new CheckRecord();
         checkRecord.setOpenid(openid);
@@ -138,7 +138,7 @@ public class UserServiceImpl implements UserService {
         JSONObject userInfo = wechatMPApi.getUserInfo(wechatMPVariable.getAccessToken(), openid, WechatConstant.ZH_CN_LANG);
         openid = userInfo.getString("openid");
         if (openid == null){
-            throw new ClientException(ErrConstant.CANNOT_GET_USER_FROM_WECHATMP, ErrConstant.CANNOT_GET_USER_FROM_WECHATMP_TEXT);
+            throw new ClientException(openid, ErrConstant.CANNOT_GET_USER_FROM_WECHATMP, ErrConstant.CANNOT_GET_USER_FROM_WECHATMP_TEXT);
         }
         User user = new User();
         user.setOpenid(openid);
@@ -153,7 +153,7 @@ public class UserServiceImpl implements UserService {
         Position position = loadPosition(openid);
 
         if (position == null){
-            throw new ClientException(ErrConstant.CANNOT_GET_POSITION, ErrConstant.CANNOT_GET_POSITION_TEXT);
+            throw new ClientException(openid, ErrConstant.CANNOT_GET_POSITION, ErrConstant.CANNOT_GET_POSITION_TEXT);
         }
 
         Coordinate lat = Coordinate.fromDegrees(checkLatitude);
@@ -166,7 +166,7 @@ public class UserServiceImpl implements UserService {
 
         double distance = EarthCalc.harvesineDistance(checkPosition, userPosition); //in meters
         if (distance > checkDistance) {
-            throw new ClientException(ErrConstant.EXCEED_DISTANCE, ErrConstant.EXCEED_DISTANCE_TEXT);
+            throw new ClientException(openid, ErrConstant.EXCEED_DISTANCE, ErrConstant.EXCEED_DISTANCE_TEXT);
         }
     }
 }
