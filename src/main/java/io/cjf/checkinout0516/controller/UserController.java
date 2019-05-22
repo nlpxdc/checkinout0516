@@ -14,6 +14,7 @@ import java.util.Date;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin
 public class UserController {
 
     @Value("${check.latitude}")
