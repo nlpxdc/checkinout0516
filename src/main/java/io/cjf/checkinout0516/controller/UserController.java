@@ -3,12 +3,14 @@ package io.cjf.checkinout0516.controller;
 import com.grum.geocalc.Coordinate;
 import com.grum.geocalc.EarthCalc;
 import com.grum.geocalc.Point;
+import io.cjf.checkinout0516.dao.CheckRecordMapper;
 import io.cjf.checkinout0516.exception.WebClientException;
+import io.cjf.checkinout0516.po.CheckRecord;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 @RestController
 @RequestMapping("/user")
@@ -22,6 +24,9 @@ public class UserController {
 
     @Value("${check.distance}")
     private Double checkDistance;
+
+    @Autowired
+    private CheckRecordMapper checkRecordMapper;
 
     @GetMapping("/canCheck")
     public void canCheck(@RequestParam Double latitude,
@@ -38,6 +43,18 @@ public class UserController {
         if (distance > checkDistance) {
             throw new WebClientException("不在打卡范围");
         }
+    }
+
+    @PostMapping("/check")
+    public Integer check(@RequestParam String openid,
+                      @RequestParam Byte type){
+        CheckRecord checkRecord = new CheckRecord();
+        checkRecord.setOpenid(openid);
+        checkRecord.setType(type);
+        checkRecord.setTime(new Date());
+        checkRecordMapper.insert(checkRecord);
+        Integer id = checkRecord.getId();
+        return id;
     }
 
 }
