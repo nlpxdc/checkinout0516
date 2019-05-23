@@ -4,8 +4,10 @@ import com.grum.geocalc.Coordinate;
 import com.grum.geocalc.EarthCalc;
 import com.grum.geocalc.Point;
 import io.cjf.checkinout0516.dao.CheckRecordMapper;
+import io.cjf.checkinout0516.dao.UserMapper;
 import io.cjf.checkinout0516.exception.WebClientException;
 import io.cjf.checkinout0516.po.CheckRecord;
+import io.cjf.checkinout0516.po.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +29,9 @@ public class UserController {
     private Double checkDistance;
 
     @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
     private CheckRecordMapper checkRecordMapper;
 
     @GetMapping("/canCheck")
@@ -44,6 +49,13 @@ public class UserController {
         if (distance > checkDistance) {
             throw new WebClientException("不在打卡范围");
         }
+    }
+
+    @GetMapping("/getCurrentStatus")
+    public Byte getCurrentStatus(String openid){
+        User user = userMapper.selectByPrimaryKey(openid);
+        Byte status = user.getStatus();
+        return status;
     }
 
     @PostMapping("/check")
