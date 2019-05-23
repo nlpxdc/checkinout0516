@@ -61,6 +61,7 @@ public class UserController {
     @PostMapping("/check")
     public Integer check(@RequestParam String openid,
                       @RequestParam Byte type){
+        //todo check if is the right status
         CheckRecord checkRecord = new CheckRecord();
         checkRecord.setOpenid(openid);
         checkRecord.setType(type);
