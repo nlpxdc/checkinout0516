@@ -1,5 +1,6 @@
 package io.cjf.checkinout0516.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.grum.geocalc.Coordinate;
 import com.grum.geocalc.EarthCalc;
 import com.grum.geocalc.Point;
@@ -8,6 +9,7 @@ import io.cjf.checkinout0516.dao.UserMapper;
 import io.cjf.checkinout0516.exception.WebClientException;
 import io.cjf.checkinout0516.po.CheckRecord;
 import io.cjf.checkinout0516.po.User;
+import io.cjf.checkinout0516.service.WechatMPService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +35,9 @@ public class UserController {
 
     @Autowired
     private CheckRecordMapper checkRecordMapper;
+
+    @Autowired
+    private WechatMPService wechatMPService;
 
     @GetMapping("/canCheck")
     public void canCheck(@RequestParam Double latitude,
@@ -70,5 +75,13 @@ public class UserController {
         Integer id = checkRecord.getId();
         return id;
     }
+
+    @GetMapping("/getToken")
+    public String getToken(@RequestParam String code){
+        JSONObject jsonObject = wechatMPService.getUserAccessToken(code);
+        return jsonObject.getString("access_token");
+    }
+
+    //todo get openid
 
 }

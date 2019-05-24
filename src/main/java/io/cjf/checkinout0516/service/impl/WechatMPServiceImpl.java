@@ -2,6 +2,8 @@ package io.cjf.checkinout0516.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import io.cjf.checkinout0516.api.WechatMPApi;
+import io.cjf.checkinout0516.api.WechatMPSNSApi;
+import io.cjf.checkinout0516.constant.WechatConstant;
 import io.cjf.checkinout0516.service.WechatMPService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +25,20 @@ public class WechatMPServiceImpl implements WechatMPService {
     @Autowired
     private WechatMPApi wechatMPApi;
 
+    @Autowired
+    private WechatMPSNSApi wechatMPSNSApi;
+
     @Override
     public String getAccessToken() {
         logger.info("ready to renew wechatmp access token");
         JSONObject jsonObject = wechatMPApi.getAccessToken("client_credential", appId, appSecret);
         String access_token = jsonObject.getString("access_token");
         return access_token;
+    }
+
+    @Override
+    public JSONObject getUserAccessToken(String code) {
+        JSONObject jsonObject = wechatMPSNSApi.getUserAccessToken(appId, appSecret, code, WechatConstant.AUTHORIZATION_CODE);
+        return jsonObject;
     }
 }

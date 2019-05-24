@@ -17,4 +17,5 @@ public interface WechatMPApi {
     JSONObject getUserInfo(@RequestParam String access_token,
                            @RequestParam String openid,
                            @RequestParam String lang);
+
 }
