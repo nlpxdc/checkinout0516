@@ -1,5 +1,6 @@
 package io.cjf.checkinout0516.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import io.cjf.checkinout0516.api.WechatMPApi;
 import io.cjf.checkinout0516.api.WechatMPSNSApi;
@@ -38,7 +39,8 @@ public class WechatMPServiceImpl implements WechatMPService {
 
     @Override
     public JSONObject getUserAccessToken(String code) {
-        JSONObject jsonObject = wechatMPSNSApi.getUserAccessToken(appId, appSecret, code, WechatConstant.AUTHORIZATION_CODE);
+        String jsonStr = wechatMPSNSApi.getUserAccessToken(appId, appSecret, code, WechatConstant.AUTHORIZATION_CODE);
+        JSONObject jsonObject = JSON.parseObject(jsonStr);
         return jsonObject;
     }
 }

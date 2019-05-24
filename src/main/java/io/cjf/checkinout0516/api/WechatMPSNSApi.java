@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface WechatMPSNSApi {
 
     @GetMapping("/oauth2/access_token")
-    JSONObject getUserAccessToken(@RequestParam String appid,
+    String getUserAccessToken(@RequestParam String appid,
                                   @RequestParam String secret,
                                   @RequestParam String code,
                                   @RequestParam String grant_type);

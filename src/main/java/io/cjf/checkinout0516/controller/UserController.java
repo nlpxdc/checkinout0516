@@ -77,11 +77,9 @@ public class UserController {
     }
 
     @GetMapping("/getToken")
-    public String getToken(@RequestParam String code){
+    public JSONObject getToken(@RequestParam String code){
         JSONObject jsonObject = wechatMPService.getUserAccessToken(code);
-        return jsonObject.getString("access_token");
+        return jsonObject;
     }
-
-    //todo get openid
 
 }
