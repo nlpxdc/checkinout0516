@@ -6,12 +6,15 @@ import com.grum.geocalc.EarthCalc;
 import com.grum.geocalc.Point;
 import io.cjf.checkinout0516.dao.CheckRecordMapper;
 import io.cjf.checkinout0516.dao.UserMapper;
+import io.cjf.checkinout0516.enumeration.CheckType;
+import io.cjf.checkinout0516.enumeration.UserStatus;
 import io.cjf.checkinout0516.exception.WebClientException;
 import io.cjf.checkinout0516.po.CheckRecord;
 import io.cjf.checkinout0516.po.User;
 import io.cjf.checkinout0516.service.WechatMPService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -64,14 +67,33 @@ public class UserController {
     }
 
     @PostMapping("/check")
+    @Transactional
     public Integer check(@RequestParam String openid,
-                      @RequestParam Byte type){
-        //todo check if is the right status
+                      @RequestParam Byte type) throws WebClientException {
+
+        User user = userMapper.selectByPrimaryKey(openid);
+        Byte status = user.getStatus();
+        if (type == CheckType.CheckIn.ordinal() && status == UserStatus.OnWorking.ordinal()){
+            throw new WebClientException("已签到");
+        }
+        if (type == CheckType.CheckOut.ordinal() && status == UserStatus.OffWorking.ordinal()){
+            throw new WebClientException("已签退");
+        }
+
         CheckRecord checkRecord = new CheckRecord();
         checkRecord.setOpenid(openid);
         checkRecord.setType(type);
         checkRecord.setTime(new Date());
         checkRecordMapper.insert(checkRecord);
+
+        if (type == CheckType.CheckIn.ordinal()){
+            user.setStatus((byte) UserStatus.OnWorking.ordinal());
+        }
+        if (type == CheckType.CheckOut.ordinal()){
+            user.setStatus((byte) UserStatus.OffWorking.ordinal());
+        }
+        userMapper.updateByPrimaryKey(user);
+
         Integer id = checkRecord.getId();
         return id;
     }
