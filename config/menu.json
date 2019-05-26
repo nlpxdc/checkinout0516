@@ -1,0 +1,29 @@
+{
+  "button": [
+    {
+      "name": "按钮考勤",
+      "sub_button": [
+        {
+          "type": "click",
+          "name": "上班打卡",
+          "key": "checkin"
+        },
+        {
+          "type": "click",
+          "name": "下班打卡",
+          "key": "checkout"
+        }
+      ]
+    },
+    {
+      "name": "网页考勤",
+      "sub_button": [
+        {
+          "type": "view",
+          "name": "网页打卡",
+          "url": "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx0c14a6dfeab19166&redirect_uri=url&response_type=code&scope=snsapi_userinfo"
+        }
+      ]
+    }
+  ]
+}
